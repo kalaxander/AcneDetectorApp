@@ -1,0 +1,6 @@
+tensorflow
+opencv-python-headless
+mediapipe
+numpy
+matplotlib
+Pillow

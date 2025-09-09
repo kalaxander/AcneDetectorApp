@@ -5,11 +5,13 @@ import numpy as np
 # This script is for the TRANSFER LEARNING model.
 
 # 1. Load the new trained model
-model = tf.keras.models.load_model("acne_transfer_model_best.h5")
+from config import MODEL_PATH, LABELS_PATH # Import the paths
+
+model = tf.keras.models.load_model(MODEL_PATH)
 
 # 2. Load the label map
 label_dict = {}
-with open("labels.txt", "r") as f:
+with open(LABELS_PATH, "r") as f:
     for line in f:
         idx, label = line.strip().split(":")
         label_dict[int(idx)] = label

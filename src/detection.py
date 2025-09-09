@@ -1,28 +1,38 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import sys 
 import tensorflow as tf
-
+from config import MODEL_PATH, LABELS_PATH
 # --- METHOD 2: Using the Trained CNN Model ---
 
-# 1. Load your trained transfer learning model
 try:
-    model = tf.keras.models.load_model('acne_transfer_model_best.h5')
+    # CHANGED: Use the centralized path from the config file
+    model = tf.keras.models.load_model(MODEL_PATH)
 except Exception as e:
-    print(f"Error loading model: {e}")
-    print("Please ensure 'acne_transfer_model_best.h5' is in the correct directory.")
-    exit()
+    # Give a more helpful error message
+    print(f"--- FATAL ERROR ---")
+    print(f"Could not load the model file from: {MODEL_PATH}")
+    print(f"Error details: {e}")
+    print(f"Please make sure the model exists and is not corrupted.")
+    sys.exit(1) # Exit the program with an error code
 
 # 2. Load the label map
 label_dict = {}
 try:
-    with open("labels.txt", "r") as f:
+    with open(LABELS_PATH, "r") as f:
         for line in f:
             idx, label = line.strip().split(":")
             label_dict[int(idx)] = label
 except FileNotFoundError:
-    print("Error: labels.txt not found. Please ensure it is in the correct directory.")
-    exit()
+    print(f"--- FATAL ERROR ---")
+    print(f"The labels file was not found at: {LABELS_PATH}")
+    sys.exit(1)
+except Exception as e:
+    # CHANGED: Catch other potential errors during file reading
+    print(f"--- FATAL ERROR ---")
+    print(f"An error occurred while reading the labels file: {e}")
+    sys.exit(1)
 
 # 3. Define cause dictionary (ensure keys match labels.txt)
 cause_dict = {
