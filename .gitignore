@@ -1,0 +1,11 @@
+# Datasets, Models, and Outputs
+dataset/
+models/
+outputs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
